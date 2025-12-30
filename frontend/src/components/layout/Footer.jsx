@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowRight } from 'lucide-react';
-import { categories } from '../../data/mock';
+import { fetchCategories } from '../../services/api';
 
 const Footer = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const cats = await fetchCategories();
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    };
+    loadCategories();
+  }, []);
   return (
     <footer className="bg-[#302f2c] border-t border-[rgba(63,72,22,0.5)]">
       <div className="max-w-[87.5rem] mx-auto px-5 md:px-10 py-12 md:py-16">
