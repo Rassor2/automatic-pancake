@@ -344,16 +344,13 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Categories API - GET all categories"
-    - "Articles API - GET featured articles"
-    - "Newsletter API - Subscribe"
-    - "Contact API - Submit form"
-    - "Articles API - Search articles"
+  current_focus: []
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
     message: "Completed full backend implementation with MongoDB integration. All APIs are implemented: Categories, Articles (with search, featured, category filter), Newsletter subscription, and Contact form. Database is automatically seeded with 6 categories and 12 articles on startup. Frontend is connected to backend via API service. Please test all endpoints."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All 14 backend API tests passed (100% success rate). Tested Categories API (6 categories, individual category fetch, 404 handling), Articles API (12 articles, 3 featured articles, individual article fetch, category filtering, search functionality, 404 handling), Newsletter API (subscription, duplicate handling, validation), and Contact API (form submission, validation). All endpoints working correctly with proper data validation and error handling. Backend is fully functional and ready for production."
