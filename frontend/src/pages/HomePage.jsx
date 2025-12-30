@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Users, Target } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Layout from '../components/layout/Layout';
 import ArticleCard from '../components/cards/ArticleCard';
 import CategoryCard from '../components/cards/CategoryCard';
-import { featuredArticles, articles, categories } from '../data/mock';
+import { fetchFeaturedArticles, fetchArticles, fetchCategories } from '../services/api';
 
 const HomePage = () => {
-  const latestArticles = articles.slice(0, 6);
+  const [featuredArticles, setFeaturedArticles] = useState([]);
+  const [latestArticles, setLatestArticles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [featured, latest, cats] = await Promise.all([
+          fetchFeaturedArticles(3),
+          fetchArticles(6),
+          fetchCategories()
+        ]);
+        setFeaturedArticles(featured);
+        setLatestArticles(latest);
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error loading homepage data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
   return (
     <Layout>
