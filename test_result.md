@@ -111,11 +111,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/categories endpoint. Returns 6 categories from MongoDB."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/categories returns exactly 6 categories as expected. All category data structure is correct."
 
   - task: "Categories API - GET category by slug"
     implemented: true
@@ -123,11 +126,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/categories/:slug endpoint. Returns single category or 404."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/categories/studies-degrees returns correct category details. 404 handling works for nonexistent categories."
 
   - task: "Articles API - GET all articles"
     implemented: true
@@ -135,11 +141,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/articles with pagination. Returns 12 articles from MongoDB."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/articles returns exactly 12 articles with proper pagination. All article data structure is correct."
 
   - task: "Articles API - GET featured articles"
     implemented: true
@@ -147,11 +156,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/articles/featured. Returns 3 featured articles."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/articles/featured returns exactly 3 articles, all properly marked as featured=true."
 
   - task: "Articles API - GET article by slug"
     implemented: true
@@ -159,11 +171,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/articles/:slug. Returns full article with content."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/articles/which-career-should-you-choose-in-2025 returns full article with complete content. 404 handling works for nonexistent articles."
 
   - task: "Articles API - GET articles by category"
     implemented: true
@@ -171,11 +186,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/articles/category/:categorySlug with exclude param."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/articles/category/career-paths returns articles correctly filtered by category. All returned articles belong to career-paths category."
 
   - task: "Articles API - Search articles"
     implemented: true
@@ -183,11 +201,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented GET /api/articles/search?q=. Case-insensitive search on title/excerpt."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/articles/search?q=career returns matching articles. Search functionality works correctly on title and excerpt fields."
 
   - task: "Newsletter API - Subscribe"
     implemented: true
@@ -195,11 +216,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented POST /api/newsletter/subscribe. Stores in MongoDB with email validation."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/newsletter/subscribe works with valid data, handles duplicate emails gracefully, and returns proper validation errors for invalid emails (422 status)."
 
   - task: "Contact API - Submit form"
     implemented: true
@@ -207,11 +231,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented POST /api/contact. Stores messages in MongoDB."
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/contact works with valid data and returns proper validation errors (422 status) for missing required fields."
 
   - task: "Database seeding"
     implemented: true
