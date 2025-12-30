@@ -70,7 +70,11 @@ const SearchPage = () => {
       {/* Search Results */}
       <section className="bg-[#302f2c] py-12 md:py-16">
         <div className="max-w-[87.5rem] mx-auto px-5 md:px-10">
-          {query ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-[#888680]">Searching...</p>
+            </div>
+          ) : query ? (
             <>
               <p className="text-[#888680] mb-8">
                 {results.length} result{results.length !== 1 ? 's' : ''} for "{query}"
