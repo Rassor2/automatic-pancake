@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Layout from '../components/layout/Layout';
 import ArticleCard from '../components/cards/ArticleCard';
-import { getCategoryBySlug, getArticlesByCategory, categories } from '../data/mock';
+import { fetchCategoryBySlug, fetchArticlesByCategory, fetchCategories } from '../services/api';
 import { GraduationCap, TrendingUp, DollarSign, Award, RefreshCw, Lightbulb } from 'lucide-react';
 
 const iconMap = {
@@ -18,8 +18,41 @@ const iconMap = {
 
 const CategoryPage = () => {
   const { slug } = useParams();
-  const category = getCategoryBySlug(slug);
-  const categoryArticles = getArticlesByCategory(slug);
+  const [category, setCategory] = useState(null);
+  const [categoryArticles, setCategoryArticles] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const [cat, articles, cats] = await Promise.all([
+          fetchCategoryBySlug(slug),
+          fetchArticlesByCategory(slug),
+          fetchCategories()
+        ]);
+        setCategory(cat);
+        setCategoryArticles(articles);
+        setAllCategories(cats);
+      } catch (error) {
+        console.error('Error loading category:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="text-[#888680]">Loading...</div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!category) {
     return (
