@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import Layout from '../components/layout/Layout';
 import { toast } from 'sonner';
+import { subscribeNewsletter } from '../services/api';
 
 const NewsletterPage = () => {
   const [email, setEmail] = useState('');
@@ -21,12 +22,15 @@ const NewsletterPage = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call - will be replaced with actual backend
-    setTimeout(() => {
+    try {
+      await subscribeNewsletter(email, name || null);
       setIsSubscribed(true);
-      setIsSubmitting(false);
       toast.success('Successfully subscribed to the newsletter!');
-    }, 1000);
+    } catch (error) {
+      toast.error('Failed to subscribe. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubscribed) {
