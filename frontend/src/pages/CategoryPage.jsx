@@ -150,7 +150,7 @@ const CategoryPage = () => {
             Explore Other Categories
           </h2>
           <div className="flex flex-wrap gap-3">
-            {categories
+            {allCategories
               .filter(cat => cat.slug !== slug)
               .map((cat) => (
                 <Link
