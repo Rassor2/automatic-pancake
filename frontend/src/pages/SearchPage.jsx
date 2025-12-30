@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, ArrowLeft } from 'lucide-react';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import Layout from '../components/layout/Layout';
 import ArticleCard from '../components/cards/ArticleCard';
-import { searchArticles } from '../data/mock';
+import { searchArticles } from '../services/api';
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [searchQuery, setSearchQuery] = useState(query);
-  const results = searchArticles(query);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const performSearch = async () => {
+      if (query) {
+        setLoading(true);
+        try {
+          const searchResults = await searchArticles(query);
+          setResults(searchResults);
+        } catch (error) {
+          console.error('Error searching:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    performSearch();
+  }, [query]);
 
   const handleSearch = (e) => {
     e.preventDefault();
