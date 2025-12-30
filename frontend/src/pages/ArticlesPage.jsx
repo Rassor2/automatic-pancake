@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import ArticleCard from '../components/cards/ArticleCard';
-import { articles, categories } from '../data/mock';
+import { fetchArticles, fetchCategories } from '../services/api';
 
 const ArticlesPage = () => {
+  const [articles, setArticles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [arts, cats] = await Promise.all([
+          fetchArticles(),
+          fetchCategories()
+        ]);
+        setArticles(arts);
+        setCategories(cats);
+      } catch (error) {
+        console.error('Error loading articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
   return (
     <Layout>
       {/* Page Header */}
