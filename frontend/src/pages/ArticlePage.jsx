@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, User, Calendar, ChevronRight, Share2, Bookmark } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import Layout from '../components/layout/Layout';
 import ArticleCard from '../components/cards/ArticleCard';
-import { getArticleBySlug, getRelatedArticles, articles } from '../data/mock';
+import { fetchArticleBySlug, fetchArticlesByCategory } from '../services/api';
 
 const ArticlePage = () => {
   const { slug } = useParams();
-  const article = getArticleBySlug(slug);
-  const relatedArticles = article ? getRelatedArticles(slug, article.category, 3) : [];
+  const [article, setArticle] = useState(null);
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadArticle = async () => {
+      setLoading(true);
+      try {
+        const articleData = await fetchArticleBySlug(slug);
+        setArticle(articleData);
+        
+        if (articleData) {
+          const related = await fetchArticlesByCategory(articleData.category, slug, 3);
+          setRelatedArticles(related);
+        }
+      } catch (error) {
+        console.error('Error loading article:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadArticle();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <div className="text-[#888680]">Loading...</div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!article) {
     return (
