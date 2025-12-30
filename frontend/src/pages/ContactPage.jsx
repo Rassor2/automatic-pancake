@@ -5,6 +5,7 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import Layout from '../components/layout/Layout';
 import { toast } from 'sonner';
+import { submitContactForm } from '../services/api';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -31,12 +32,15 @@ const ContactPage = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call - will be replaced with actual backend
-    setTimeout(() => {
+    try {
+      await submitContactForm(formData);
       setIsSubmitted(true);
-      setIsSubmitting(false);
       toast.success('Message sent successfully!');
-    }, 1000);
+    } catch (error) {
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
